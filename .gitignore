@@ -1,8 +1,11 @@
 #
 venv/*
-keys.py
 .vscode/*
 
+# Keys
+io/keys.py
+io/migrations/*
+io/temp.db
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
