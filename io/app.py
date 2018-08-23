@@ -10,6 +10,7 @@ app = Flask(__name__)
 # App Config
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://%(user)s:%(pw)s@%(host)s:%(port)s/%(db)s' % _POSTGRES
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///temp.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Databaset Initialisation
 db.init_app(app)
