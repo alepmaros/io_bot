@@ -1,7 +1,7 @@
-import requests
+import requests, uuid, pprint
 from flask import Flask, request
 
-from models import db
+from models import db, Chat
 
 from keys import _TELEGRAM_TOKEN, _POSTGRES
 
@@ -19,19 +19,56 @@ def get_url(method):
   return 'https://api.telegram.org/bot{}/{}'.format(_TELEGRAM_TOKEN,method)
 
 def process_message(update):
+    chat_id = update['message']['chat']['id']
+
     data = {}
-    data['chat_id'] = update['message']['from']['id']
-    data['text'] = 'I can hear you!'
+    data['chat_id'] = chat_id
+    print(update['message']['text'])
+    if (update['message']['text'].startswith('/gettoken')):
+        with app.app_context():
+            chat = Chat.query.filter_by(chat_id=chat_id, revoked=False).first()
+            if (chat == None):
+                new_uuid = str(uuid.uuid1()).replace('-','')
+                # TO-DO: ADD CHECK TO SEE IF UUID ALREADY EXISTS
+
+                data['text'] = 'Here is your token: {}'.format(new_uuid)
+
+                new_chat = Chat(chat_id=str(chat_id), token=new_uuid)
+                db.session.add(new_chat)
+                db.session.commit()
+            else:
+                data['text'] = 'Looks like you already have a token for this chat.\n' \
+                               'Here it is: {}'.format(chat.token)
+    else:
+        data['text'] = 'Hi, please use the available commands.'
     r = requests.post(get_url('sendMessage'), data=data)
 
 @app.route('/{}'.format(_TELEGRAM_TOKEN), methods=['POST'])
 def process_update():
     if request.method == 'POST':
         update = request.get_json()
-        print(update)
+        # pprint.pprint(update)
         if 'message' in update:
             process_message(update)
-        return 'ok!', 200
+        return 'ok', 200
+    return 404
+
+@app.route('/send-message', methods=['POST'])
+def process_send_message():
+    if request.method == 'POST':
+        message = request.get_json()
+        print(message)
+        if ('token' in message):
+            token = message['token']
+            with app.app_context():
+                chat = Chat.query.filter_by(token=token, revoked=False).first()
+                if chat is not None:
+                    data = {}
+                    data['chat_id'] = chat.chat_id
+                    data['text']    = message['text']
+                    r = requests.post(get_url('sendMessage'), data=data)
+                    return 'ok', 200
+    return 404
 
 @app.route('/')
 def main():

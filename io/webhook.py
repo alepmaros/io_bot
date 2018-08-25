@@ -4,7 +4,7 @@ import requests
 from keys import _TELEGRAM_TOKEN
 
 bot_token = _TELEGRAM_TOKEN
-test_url = "https://7f332be0.ngrok.io/{}".format(bot_token)
+test_url = "https://3c3bc611.ngrok.io/{}".format(bot_token)
 
 def get_url(method):
     return "https://api.telegram.org/bot{}/{}".format(bot_token,method)
