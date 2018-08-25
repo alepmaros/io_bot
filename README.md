@@ -15,7 +15,7 @@ import requests, json
 url = '<URL>'
 data = {"token":"<YOUR-TOKEN>","text":"Testing"}
 headers = {'Content-type': 'application/json'}
->>> r = requests.post(url, data=json.dumps(data), headers=headers)
+r = requests.post(url, data=json.dumps(data), headers=headers)
 ```
 
 
