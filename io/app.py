@@ -24,23 +24,31 @@ def process_message(update):
     data = {}
     data['chat_id'] = chat_id
     print(update['message']['text'])
-    if (update['message']['text'].startswith('/gettoken')):
+    if (update['message']['text'].startswith('/token')):
         with app.app_context():
             chat = Chat.query.filter_by(chat_id=chat_id, revoked=False).first()
             if (chat == None):
                 new_uuid = str(uuid.uuid1()).replace('-','')
                 # TO-DO: ADD CHECK TO SEE IF UUID ALREADY EXISTS
-
-                data['text'] = 'Here is your token: {}'.format(new_uuid)
-
                 new_chat = Chat(chat_id=str(chat_id), token=new_uuid)
                 db.session.add(new_chat)
                 db.session.commit()
+
+                data['text'] = 'Here is your token: {}'.format(new_uuid)
             else:
                 data['text'] = 'Looks like you already have a token for this chat.\n' \
                                'Here it is: {}'.format(chat.token)
+    elif (update['message']['text'].startswith('/revoke')):
+        with app.app_context():
+            chat = Chat.query.filter_by(chat_id=chat_id, revoked=False).first()
+            if (chat == None):
+                data['text'] = 'You have no active token.'
+            else:
+                chat.revoked = True
+                db.session.commit()
+                data['text'] = 'Token revoked. Please use /token to generate a new one.'
     else:
-        data['text'] = 'Hi, please use the available commands.'
+        data['text'] = 'Hi, please use the available commands:\n/token to generate a new token or\n/revoke to revoke a token.'
     r = requests.post(get_url('sendMessage'), data=data)
 
 @app.route('/{}'.format(_TELEGRAM_TOKEN), methods=['POST'])
