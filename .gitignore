@@ -7,6 +7,12 @@ io/keys.py
 io/migrations/*
 io/temp.db
 
+# Server stuff
+io/io.sock
+io/io.ini
+io/wsgi.py
+io/webhook.py
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
