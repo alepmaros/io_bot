@@ -16,7 +16,7 @@ curl --header "Content-Type: application/json" --request POST --data '{"token":"
 import requests, json
 
 def send_telegram_message(token, message):
-    url = https://dayrell.me/send-message
+    url = 'https://dayrell.me/send-message'
     data = {"token": token, "text": message}
     headers = {'Content-type': 'application/json'}
     r = requests.post(url, data=json.dumps(data), headers=headers)
