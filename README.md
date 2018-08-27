@@ -2,20 +2,25 @@
 
 Telegram I/O Bot
 
+Currently under development
+
 # Sending messages via code
 
 1. Curl
 ```
-curl --header "Content-Type: application/json" --request POST --data '{"token":"<YOUR-TOKEN>","text":"Testing"}' <URL>
+curl --header "Content-Type: application/json" --request POST --data '{"token":"<YOUR-TOKEN>","text":"Testing"}' https://dayrell.me/send-message
 ```
 
 2. Python
 ```
 import requests, json
-url = '<URL>'
-data = {"token":"<YOUR-TOKEN>","text":"Testing"}
-headers = {'Content-type': 'application/json'}
-r = requests.post(url, data=json.dumps(data), headers=headers)
+
+def send_telegram_message(token, message):
+    url = https://dayrell.me/send-message
+    data = {"token": token, "text": message}
+    headers = {'Content-type': 'application/json'}
+    r = requests.post(url, data=json.dumps(data), headers=headers)
+    return r
 ```
 
 
