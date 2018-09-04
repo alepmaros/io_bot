@@ -20,13 +20,33 @@ import requests, json
 
 def send_telegram_message(token, message):
     url = 'https://dayrell.me/send-message'
-    data = {"token": token, "text": message}
+    data = {'token': token, 'text': message}
     headers = {'Content-type': 'application/json'}
     try:
         r = requests.post(url, data=json.dumps(data), headers=headers)
         return r
     except:
         return None
+```
+
+If you cant install requests and only want to use native Python Libraries
+
+```
+import json, import urllib.request
+def send_telegram_message(message, token):
+    url = 'https://dayrell.me/send-message'
+    data = {'token': token, 'text': message}
+
+    try:
+        req = urllib.request.Request(url)
+        req.add_header('Content-Type', 'application/json; charset=utf-8')
+        jsondata = json.dumps(data)
+        jsondataasbytes = jsondata.encode('utf-8')
+        req.add_header('Content-Length', len(jsondataasbytes))
+        r = urllib.request.urlopen(req, jsondataasbytes)
+        return r
+    except:
+        return None        
 ```
 
 # Things that need to be done
