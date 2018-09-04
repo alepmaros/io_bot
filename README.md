@@ -32,7 +32,7 @@ def send_telegram_message(token, message):
 If you cant install requests and only want to use native Python Libraries
 
 ```
-import json, import urllib.request
+import json, urllib.request
 def send_telegram_message(message, token):
     url = 'https://dayrell.me/send-message'
     data = {'token': token, 'text': message}
