@@ -48,12 +48,3 @@ def send_telegram_message(message, token):
     except:
         return None        
 ```
-
-# Things that need to be done
-- [ ] Re-factor code
-- [ ] Check if UUID exists before adding to the database
-- [ ] Make good return messages
-- [ ] Add option to revoke key
-- [ ] Add a way to use input via code
-- [ ] More extensive README
-
